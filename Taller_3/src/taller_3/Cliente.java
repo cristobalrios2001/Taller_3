@@ -14,7 +14,7 @@ public class Cliente {
     private String nombre;
     private String apellido;
     private int saldo;
-    private ListaDobleNexoCircular lEnvio;
+    private ListaDobleNexo lEnvio;
 
     public Cliente(String rut, String nombre, String apellido, int saldo) {
         this.rut = rut;
@@ -55,11 +55,11 @@ public class Cliente {
         this.saldo = saldo;
     }
 
-    public ListaDobleNexoCircular getlEnvio() {
+    public ListaDobleNexo getlEnvio() {
         return lEnvio;
     }
 
-    public void setlEnvio(ListaDobleNexoCircular lEnvio) {
+    public void setlEnvio(ListaDobleNexo lEnvio) {
         this.lEnvio = lEnvio;
     }
     
