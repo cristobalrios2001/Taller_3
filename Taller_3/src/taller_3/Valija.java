@@ -9,6 +9,26 @@ package taller_3;
  *
  * @author crist
  */
-public class Valija {
+public class Valija extends Envio{
+    private String material;
+
+    public Valija(String codigo, int peso, String material) {
+        super(codigo, peso);
+        this.material = material;
+    }
+
+    public String getMaterial() {
+        return material;
+    }
+
+    public void setMaterial(String material) {
+        this.material = material;
+    }
+
+    @Override
+    int valor() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
     
 }
