@@ -27,8 +27,23 @@ public class Valija extends Envio{
 
     @Override
     int valor() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int precioMaterial = precioPorMaterial(material);
+        Double pesoKg = peso/1000;
+        int pago = (int) (precioMaterial*pesoKg*150);
+        return pago;
     }
     
+    public int precioPorMaterial(String material){
+        switch(material){
+            case("Cuero"):
+                return 200;
+            case("Plastico"):
+                return 150;
+            case("Tela"):
+                return 100;
+            default:
+                throw new IllegalArgumentException("El tipo de material no existe en el sistema");
+        }
+    }
     
 }

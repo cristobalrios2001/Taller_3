@@ -46,13 +46,15 @@ public class Encomienda extends Envio {
     }
     
     
-    
-    
-    
 
     @Override
     int valor() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Double pesoVer = peso/1000;
+        Double largoVer = largo/1000;
+        Double anchoVer = ancho/1000;
+        Double profundidadVer = profundidad/1000;
+        int pago = (int) (pesoVer*largoVer*anchoVer*profundidadVer*50);
+        return pago;
     }
     
     

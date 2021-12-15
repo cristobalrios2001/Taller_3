@@ -34,6 +34,17 @@ public class System implements SystemImpl{
     //AQUI DEBO BUCAR LA CIUDAD DEL RUT REMITENTE COMO EL DEL DESTINATARIO Y EN ESA CIUDAD COMO CORRESPONDA SUMARLE A SU CONTADOR DE ENVIOS O RECIVOS 
     
     @Override
+    public boolean verificarCiudad (String nombreCiudad){
+        for (int i = 0; i < ListaCiudades.size(); i++) {
+            Ciudad ciudad = ListaCiudades.get(i);
+            if(ciudad.getNombre().equals(nombreCiudad)){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    @Override
     public void ingresarDocumento(String codigo, String rutRemitente, String rutDestinatario, Double peso, Double grosor) {
         Envio documento = new Documento(codigo, peso, grosor);
         documento.setRutDestinatario(rutDestinatario);
@@ -45,12 +56,31 @@ public class System implements SystemImpl{
             String rutpersona = c.getRut();
             if(rutpersona.equals(rutRemitente) ) {
                 c.getlEnvioRemitente().insertar(documento);
+                boolean ciudadExiste = verificarCiudad(c.getCiudad());
+                if(ciudadExiste){
+                    for (int i = 0; i < ListaCiudades.size(); i++) {
+                        Ciudad ciudad = ListaCiudades.get(i);
+                        if(ciudad.getNombre().equals(c.getCiudad())){
+                            ciudad.setCantEnviados(ciudad.getCantEnviados()+1);
+                        }
+                    }
+                }
+                
                 
             }else if(rutpersona.equals(rutDestinatario)) {
                 c.getlEnvioDestinatario().insertar(documento);
+                boolean ciudadExiste = verificarCiudad(c.getRut());
+                if(ciudadExiste){
+                    for (int i = 0; i < ListaCiudades.size(); i++) {
+                    Ciudad ciudad = ListaCiudades.get(i);
+                        if(ciudad.getNombre().equals(c.getCiudad())){
+                            ciudad.setCantRecibidos(ciudad.getCantRecibidos()+1);
+                        }
+                    }
+                }
+                
             }
         }
-        
         
     }
 
@@ -66,9 +96,29 @@ public class System implements SystemImpl{
             String rutpersona = c.getRut();
             if(rutpersona.equals(rutRemitente) ) {
                 c.getlEnvioRemitente().insertar(encomienda);
+                boolean ciudadExiste = verificarCiudad(c.getCiudad());
+                if(ciudadExiste){
+                    for (int i = 0; i < ListaCiudades.size(); i++) {
+                        Ciudad ciudad = ListaCiudades.get(i);
+                        if(ciudad.getNombre().equals(c.getCiudad())){
+                            ciudad.setCantEnviados(ciudad.getCantEnviados()+1);
+                        }
+                    }
+                }
+                
                 
             }else if(rutpersona.equals(rutDestinatario)) {
                 c.getlEnvioDestinatario().insertar(encomienda);
+                boolean ciudadExiste = verificarCiudad(c.getRut());
+                if(ciudadExiste){
+                    for (int i = 0; i < ListaCiudades.size(); i++) {
+                    Ciudad ciudad = ListaCiudades.get(i);
+                        if(ciudad.getNombre().equals(c.getCiudad())){
+                            ciudad.setCantRecibidos(ciudad.getCantRecibidos()+1);
+                        }
+                    }
+                }
+                
             }
         }
     }
@@ -85,9 +135,29 @@ public class System implements SystemImpl{
             String rutpersona = c.getRut();
             if(rutpersona.equals(rutRemitente) ) {
                 c.getlEnvioRemitente().insertar(valija);
+                boolean ciudadExiste = verificarCiudad(c.getCiudad());
+                if(ciudadExiste){
+                    for (int i = 0; i < ListaCiudades.size(); i++) {
+                        Ciudad ciudad = ListaCiudades.get(i);
+                        if(ciudad.getNombre().equals(c.getCiudad())){
+                            ciudad.setCantEnviados(ciudad.getCantEnviados()+1);
+                        }
+                    }
+                }
+                
                 
             }else if(rutpersona.equals(rutDestinatario)) {
                 c.getlEnvioDestinatario().insertar(valija);
+                boolean ciudadExiste = verificarCiudad(c.getRut());
+                if(ciudadExiste){
+                    for (int i = 0; i < ListaCiudades.size(); i++) {
+                    Ciudad ciudad = ListaCiudades.get(i);
+                        if(ciudad.getNombre().equals(c.getCiudad())){
+                            ciudad.setCantRecibidos(ciudad.getCantRecibidos()+1);
+                        }
+                    }
+                }
+                
             }
         }
         
@@ -120,7 +190,8 @@ public class System implements SystemImpl{
                 }
             }
             case "Valija":
-                if((material.equals("Cuero") || material.equals("Plastico") || material.equals("tela")) && peso <2){
+                Double pesoVer = peso/1000;
+                if((material.equals("Cuero") || material.equals("Plastico") || material.equals("tela")) && pesoVer <2){
                     return true;
                 }else{
                     throw new NullPointerException("La Valija no cumple con los requisitos");
@@ -224,24 +295,56 @@ public class System implements SystemImpl{
             Envio envio = ListaEntregas.getElemento(i);
             if(envio instanceof Documento){
                 Documento documento = (Documento) envio;
-                salida +="\n\tTipo Entrega: Documento, Codigo: "+documento.getCodigo()+", Rut Remitente: "+documento.getRutRemitente()+", Rut Destinatario: "+documento.getRutDestinatario()+", Valor: "+documento.valor();
+                salida +="\n\tTipo Entrega: Documento, Codigo: "+documento.getCodigo()+", Rut Remitente: "+documento.getRutRemitente()+", Rut Destinatario: "+documento.getRutDestinatario()
+                            +", Peso: "+documento.getPeso()+", Grosor: "+documento.getGrosor()+", Valor: "+documento.valor();
             }else if (envio instanceof Encomienda){
                 Encomienda encomienda = (Encomienda) envio;
-                salida +="\n\tTipo Entrega: Documento, Codigo: "+encomienda.getCodigo()+", Rut Remitente: "+encomienda.getRutRemitente()+", Rut Destinatario: "+encomienda.getRutDestinatario()+", Valor: "+encomienda.valor();
+                salida +="\n\tTipo Entrega: Documento, Codigo: "+encomienda.getCodigo()+", Rut Remitente: "+encomienda.getRutRemitente()+", Rut Destinatario: "
+                            +encomienda.getRutDestinatario()+ ", Peso: "+encomienda.getPeso()+", Largo: "+encomienda.getLargo()+", Ancho: "+encomienda.getAncho()+", Profundidad: "+encomienda.getProfundidad()+", Valor: "+encomienda.valor();
             }else{
-                
+                Valija valija = (Valija) envio;
+                salida +="\n\tTipo Entrega: Documento, Codigo: "+valija.getCodigo()+", Rut Remitente: "+valija.getRutRemitente()+", Rut Destinatario: "+valija.getRutDestinatario()
+                            +", Peso: "+valija.getPeso()+", Material: "+valija.getMaterial()+", Valor: "+valija.valor();
             }
         }
+        return salida;
     }
 
     @Override
     public String obtenerEntregasPorLocalizacion() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String salida ="";
+        for (int i = 0; i < ListaCiudades.size(); i++) {
+            Ciudad ciudad = ListaCiudades.get(i);
+            salida +=ciudad.getNombre()+" realizo "+ciudad.getCantEnviados()+" envíos y recibió "+ciudad.getCantRecibidos()+" envios";
+            
+        }
+        return salida;
     }
 
     @Override
     public String obtenerEntregasCliente() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String salida = "";
+        for (int i = 0; i < ListaClientes.size(); i++) {
+            Cliente cliente = ListaClientes.get(i);
+             ListaDobleNexo ListaEntregasCliente = cliente.getlEnvioRemitente();
+             for (int j = 0; j < ListaEntregasCliente.size(); j++) {
+                Envio envio = ListaEntregasCliente.getElemento(j);
+                if(envio instanceof Documento){
+                    Documento documento = (Documento) envio;
+                    salida +="\n\tTipo Entrega: Documento, Codigo: "+documento.getCodigo()+", Rut Remitente: "+documento.getRutRemitente()+", Rut Destinatario: "+documento.getRutDestinatario()
+                            +", Peso: "+documento.getPeso()+", Grosor: "+documento.getGrosor()+", Valor: "+documento.valor();
+                }else if (envio instanceof Encomienda){
+                    Encomienda encomienda = (Encomienda) envio;
+                    salida +="\n\tTipo Entrega: Documento, Codigo: "+encomienda.getCodigo()+", Rut Remitente: "+encomienda.getRutRemitente()+", Rut Destinatario: "
+                            +encomienda.getRutDestinatario()+ ", Peso: "+encomienda.getPeso()+", Largo: "+encomienda.getLargo()+", Ancho: "+encomienda.getAncho()+", Profundidad: "+encomienda.getProfundidad()+", Valor: "+encomienda.valor();
+                }else{
+                    Valija valija = (Valija) envio;
+                    salida +="\n\tTipo Entrega: Documento, Codigo: "+valija.getCodigo()+", Rut Remitente: "+valija.getRutRemitente()+", Rut Destinatario: "+valija.getRutDestinatario()
+                            +", Peso: "+valija.getPeso()+", Material: "+valija.getMaterial()+", Valor: "+valija.valor();
+                }
+            }
+        }
+        return salida;
     }
 
     @Override
@@ -251,7 +354,7 @@ public class System implements SystemImpl{
 
     @Override
     public String obtenerBalanceTotal() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       
     }
 
     @Override

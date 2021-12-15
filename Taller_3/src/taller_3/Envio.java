@@ -11,7 +11,7 @@ package taller_3;
  */
 abstract class Envio {
     private String codigo;
-    private Double peso;
+    Double peso;
     private String rutRemitente;
     private String rutDestinatario;
 

@@ -27,7 +27,10 @@ public class Documento extends Envio {
 
     @Override
     int valor() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Double pesoVer = peso/1000;
+        Double grosorVer = grosor/10;
+        int pago =  (int) (pesoVer*grosorVer*100);
+        return pago;
     }
     
     

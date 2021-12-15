@@ -15,6 +15,8 @@ public interface SystemImpl {
     
     public boolean ingresarCiudad(String nombre);
     
+    public boolean verificarCiudad (String nombreCiudad);
+    
     public void ingresarDocumento(String codigo, String rutRemitente, String rutDestinatario, Double peso, Double grosor);
     
     public void ingresarEncomienda(String codigo, String rutRemitente, String rutDestinatario, Double peso, Double largo, Double ancho, Double profundidad );
