@@ -11,13 +11,15 @@ package taller_3;
  */
 abstract class Envio {
     private String codigo;
-    private int peso;
+    private Double peso;
     private String rutRemitente;
     private String rutDestinatario;
 
-    public Envio(String codigo, int peso) {
+    public Envio(String codigo, Double peso) {
         this.codigo = codigo;
         this.peso = peso;
+        rutRemitente = null;
+        rutDestinatario = null;
     }
 
     public String getCodigo() {
@@ -28,11 +30,11 @@ abstract class Envio {
         this.codigo = codigo;
     }
 
-    public int getPeso() {
+    public Double getPeso() {
         return peso;
     }
 
-    public void setPeso(int peso) {
+    public void setPeso(Double peso) {
         this.peso = peso;
     }
 
@@ -52,5 +54,9 @@ abstract class Envio {
         this.rutDestinatario = rutDestinatario;
     }
     
+    
+    
     abstract int valor ();
+    
+    
 }

@@ -14,13 +14,21 @@ public class Cliente {
     private String nombre;
     private String apellido;
     private int saldo;
+    private String ciudad;
     private ListaDobleNexo lEnvio;
+    
+    private ListaDobleNexo lEnvioRemitente;
+    private ListaDobleNexo lEnvioDestinatario;
 
-    public Cliente(String rut, String nombre, String apellido, int saldo) {
+    public Cliente(String rut, String nombre, String apellido, int saldo, String ciudad) {
         this.rut = rut;
         this.nombre = nombre;
         this.apellido = apellido;
         this.saldo = saldo;
+        this.ciudad = ciudad;
+        lEnvioRemitente = new ListaDobleNexo();
+        lEnvioDestinatario = new ListaDobleNexo();
+        
     }
 
     public String getRut() {
@@ -61,6 +69,18 @@ public class Cliente {
 
     public void setlEnvio(ListaDobleNexo lEnvio) {
         this.lEnvio = lEnvio;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public ListaDobleNexo getlEnvioRemitente() {
+        return lEnvioRemitente;
+    }
+
+    public ListaDobleNexo getlEnvioDestinatario() {
+        return lEnvioDestinatario;
     }
     
     

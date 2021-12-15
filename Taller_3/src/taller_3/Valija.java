@@ -12,7 +12,7 @@ package taller_3;
 public class Valija extends Envio{
     private String material;
 
-    public Valija(String codigo, int peso, String material) {
+    public Valija(String codigo, Double peso, String material) {
         super(codigo, peso);
         this.material = material;
     }

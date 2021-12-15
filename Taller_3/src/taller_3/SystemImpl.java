@@ -11,15 +11,17 @@ package taller_3;
  */
 public interface SystemImpl {
     
-    public boolean ingresarAsociar(String rut, String nombre, String apellido, int saldo, String ciudad);
+    public boolean ingresarAsociarCliente(String rut, String nombre, String apellido, int saldo, String ciudad);
     
     public boolean ingresarCiudad(String nombre);
     
-    public boolean ingresarDocumento(String codigo, String rutRemitente, String rutDestinatario, Double peso, Double grosor);
+    public void ingresarDocumento(String codigo, String rutRemitente, String rutDestinatario, Double peso, Double grosor);
     
-    public boolean ingresarEncomienda(String codigo, String rutRemitente, String rutDestinatario, Double peso, Double largo, Double ancho, Double profundidad );
+    public void ingresarEncomienda(String codigo, String rutRemitente, String rutDestinatario, Double peso, Double largo, Double ancho, Double profundidad );
     
-    public boolean ingresarValija(String codigo, String rutRemitente, String rutDestinatario, String material, Double peso );
+    public void ingresarValija(String codigo, String rutRemitente, String rutDestinatario, String material, Double peso );
+    
+    public boolean verificarParametro(String tipoEntrega, Double peso, Double grosor, Double largo, Double ancho, Double profundidad, String material);
     
     public boolean verificarRut(String rut);
     

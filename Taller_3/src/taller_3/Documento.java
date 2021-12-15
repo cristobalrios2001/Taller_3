@@ -12,7 +12,7 @@ package taller_3;
 public class Documento extends Envio {
     private Double grosor;
 
-    public Documento(String codigo, int peso, Double grosor) {
+    public Documento(String codigo, Double peso, Double grosor) {
         super(codigo, peso);
         this.grosor = grosor;
     }
@@ -29,6 +29,7 @@ public class Documento extends Envio {
     int valor() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
     
     
     

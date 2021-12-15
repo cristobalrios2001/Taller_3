@@ -14,7 +14,7 @@ public class Encomienda extends Envio {
     private Double ancho;
     private Double profundidad;
 
-    public Encomienda(String codigo, int peso, Double largo, Double ancho, Double profundidad) {
+    public Encomienda(String codigo, Double peso, Double largo, Double ancho, Double profundidad) {
         super(codigo, peso);
         this.largo = largo;
         this.ancho = ancho;

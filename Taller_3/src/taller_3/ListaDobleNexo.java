@@ -11,10 +11,11 @@ package taller_3;
  */
 public class ListaDobleNexo {
     private NodoDoble first;
-    
+    private int size;
 
     public ListaDobleNexo() {
         first = null;
+        size = 0;
     }
     
     public boolean isEmpty(){
@@ -40,6 +41,7 @@ public class ListaDobleNexo {
             
         }
         first = nuevo;
+        size++;
         
     }
     
@@ -55,6 +57,24 @@ public class ListaDobleNexo {
         }while(current != first);
         return null;
         
+    }
+    
+    public int size(){
+        return size;
+    }
+    
+    public Envio getElemento (int posicion){
+        NodoDoble current = first;
+        int posCurrent = 0;
+        do{
+            if(posCurrent == posicion){
+                return current.getEnvio();
+            }
+            posCurrent++;
+            current = current.getNext();
+        }
+        while (current != first);
+        return null;
     }
     
     
