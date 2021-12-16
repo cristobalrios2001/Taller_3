@@ -31,7 +31,7 @@ public class System implements SystemImpl{
         return ListaCiudades.add(ciudad);
     }
 
-    //AQUI DEBO BUCAR LA CIUDAD DEL RUT REMITENTE COMO EL DEL DESTINATARIO Y EN ESA CIUDAD COMO CORRESPONDA SUMARLE A SU CONTADOR DE ENVIOS O RECIVOS 
+   
     
     @Override
     public boolean verificarCiudad (String nombreCiudad){
@@ -62,6 +62,7 @@ public class System implements SystemImpl{
                         Ciudad ciudad = ListaCiudades.get(i);
                         if(ciudad.getNombre().equals(c.getCiudad())){
                             ciudad.setCantEnviados(ciudad.getCantEnviados()+1);
+                            ciudad.setGanancia(ciudad.getGanancia()+documento.valor());
                         }
                     }
                 }
@@ -75,6 +76,7 @@ public class System implements SystemImpl{
                     Ciudad ciudad = ListaCiudades.get(i);
                         if(ciudad.getNombre().equals(c.getCiudad())){
                             ciudad.setCantRecibidos(ciudad.getCantRecibidos()+1);
+                            
                         }
                     }
                 }
@@ -102,6 +104,7 @@ public class System implements SystemImpl{
                         Ciudad ciudad = ListaCiudades.get(i);
                         if(ciudad.getNombre().equals(c.getCiudad())){
                             ciudad.setCantEnviados(ciudad.getCantEnviados()+1);
+                            ciudad.setGanancia(ciudad.getGanancia()+encomienda.valor());
                         }
                     }
                 }
@@ -141,6 +144,7 @@ public class System implements SystemImpl{
                         Ciudad ciudad = ListaCiudades.get(i);
                         if(ciudad.getNombre().equals(c.getCiudad())){
                             ciudad.setCantEnviados(ciudad.getCantEnviados()+1);
+                            ciudad.setGanancia(ciudad.getGanancia()+valija.valor());
                         }
                     }
                 }
@@ -215,17 +219,25 @@ public class System implements SystemImpl{
     }
 
     
-    // HAY QUE CORREGIR EL ABSTRACT DE VALOR DE CADA ENVIO
+    
     @Override
-    public boolean descontarVerificarSueldo(String rut, int saldo) {
+    public boolean descontarVerificarSueldo(String rut, int pago) { //saldo es el valor del envio
         for (int i = 0; i < ListaClientes.size(); i++) {
             Cliente cliente = ListaClientes.get(i);
             if(cliente.getRut().equals(rut)){
-                int saldoVer = cliente.getSaldo() - saldo;
-                if(saldoVer< 0){
+                
+                if(cliente.getSaldo()<pago){
                     return false;
                 }
                 else{
+                    cliente.setSaldo(cliente.getSaldo()-pago);
+                    
+                    for (int j = 0; j < ListaCiudades.size(); j++) {
+                        Ciudad ciudad = ListaCiudades.get(j);
+                        if(cliente.getCiudad().equals(ciudad.getNombre())){
+                            ciudad.setGanancia(ciudad.getGanancia()+pago);
+                        }
+                    }
                     return true;
                 }
             }
@@ -349,12 +361,26 @@ public class System implements SystemImpl{
 
     @Override
     public String obtenerBalanceOficina() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String salida = "";
+        salida += "Balance por oficina Stakon: ";
+        for (int i = 0; i < ListaCiudades.size(); i++) {
+            Ciudad ciudad = ListaCiudades.get(i);
+            salida += "Nombre ciudad oficina: "+ciudad.getNombre()+", Recaudaci+on: "+ciudad.getGanancia();
+        }
+        return salida;
     }
 
     @Override
     public String obtenerBalanceTotal() {
+       int balanceTotal = 0;
+       String salida = "";
        
+        for (int i = 0; i < ListaCiudades.size(); i++) {
+            Ciudad ciudad = ListaCiudades.get(i);
+            balanceTotal += ciudad.getGanancia();
+        }
+        
+        return salida +="Balance total Stakon: "+balanceTotal;
     }
 
     @Override
