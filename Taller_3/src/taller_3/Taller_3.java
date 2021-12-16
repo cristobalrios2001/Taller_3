@@ -8,6 +8,7 @@ package taller_3;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.Random;
 
 /**
  *
@@ -20,21 +21,27 @@ public class Taller_3 {
      */
     public static void main(String[] args) throws IOException {
         SystemImpl sistema =new SystemEnvios();
+        Random r = new Random();
         
         lecturaLocalizacion( sistema);
         lecturaCliente( sistema);
         lecturaEntregas( sistema);
         
         Scanner sc = new Scanner(System.in);
-        
+        /*
         System.out.print("Ingrese tipo: ");
         String tipo = sc.next();
         System.out.print("Ingrese peso: ");
         Double peso = sc.nextDouble();
         System.out.print("Ingrese grosor: ");
         Double grosor = sc.nextDouble();
-       
-        System.out.println(sistema.verificarParametro(tipo, peso, grosor, 0.0, 0.0, 0.0, null));
+        */
+        //System.out.println(sistema.verificarParametro("Encomienda", 10.0, 0.0, 10.0, 10.0, 10.0, null));
+        // obtenerPrecio(String tipoEntrega, Double peso, Double grosor, Double largo, Double ancho, Double profundidad, String material)
+        
+        
+        
+        
         
         
         

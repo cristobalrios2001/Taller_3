@@ -7,6 +7,7 @@ package taller_3;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Random;
 
 /**
  *
@@ -178,21 +179,23 @@ public class SystemEnvios implements SystemImpl{
     @Override
     public boolean verificarParametro(String tipoEntrega, Double peso, Double grosor, Double largo, Double ancho, Double profundidad, String material){
         switch (tipoEntrega) {
-            case "Documento":
+            case "documento":
             {
                 Double pesoVer = peso/1000;
+                
                 Double grosorVer = grosor/10;
+                
                 if(pesoVer <= 1.5 && grosorVer <= 5){
                     return true;
                 }else{
                     return false;
                 }
             }
-            case "Encomienda":
+            case "encomienda":
             {
                 Double pesoVer = peso/1000;
                 Double largoVer = largo/1000;
-                Double anchoVer = ancho/1000;
+                Double anchoVer = ancho/1000;                
                 Double profundidadVer = profundidad/1000;
                 
                 if(pesoVer<50 && largoVer <1.2 && anchoVer < 0.8 && profundidadVer < 0.8){
@@ -201,9 +204,9 @@ public class SystemEnvios implements SystemImpl{
                     return false;
                 }
             }
-            case "Valija":
+            case "valija":
                 Double pesoVer = peso/1000;
-                if((material.equals("Cuero") || material.equals("Plastico") || material.equals("tela")) && pesoVer <2){
+                if((material.equals("cuero") || material.equals("plastico") || material.equals("tela")) && pesoVer <2){
                     return true;
                 }else{
                     return false;
@@ -233,13 +236,11 @@ public class SystemEnvios implements SystemImpl{
         for (int i = 0; i < ListaClientes.size(); i++) {
             Cliente cliente = ListaClientes.get(i);
             if(cliente.getRut().equals(rut)){
-                
                 if(cliente.getSaldo()<pago){
                     return false;
                 }
                 else{
                     cliente.setSaldo(cliente.getSaldo()-pago);
-                    
                     for (int j = 0; j < ListaCiudades.size(); j++) {
                         Ciudad ciudad = ListaCiudades.get(j);
                         if(cliente.getCiudad().equals(ciudad.getNombre())){
@@ -251,6 +252,162 @@ public class SystemEnvios implements SystemImpl{
             }
         }
         return false;
+    }
+    
+    @Override
+    public boolean entregaConfirmada(String tipoEntrega, String rutRemitente, String rutDestinatario, Double peso, Double grosor, Double largo, Double ancho, Double profundidad, String material){
+        Random r = new Random();
+        int codigoNew = r.nextInt(999999);
+        String codigoNuevo= String.valueOf(codigoNew);
+        switch (tipoEntrega) {
+            case "Documento":
+            {   
+                Envio documento = new Documento( null, peso, grosor);
+                if(documento instanceof Documento){
+                    documento.setCodigo(codigoNuevo);
+                    documento.setRutDestinatario(rutDestinatario);
+                    documento.setRutRemitente(rutRemitente);
+                    
+                    for(int j=0;j<ListaClientes.size();j++) {
+                        Cliente c =ListaClientes.get(j);
+                        String rutpersona = c.getRut();
+                        if(rutpersona.equals(rutRemitente) ) {
+                            c.getlEnvioRemitente().insertar(documento);
+                            boolean ciudadExiste = verificarCiudad(c.getCiudad());
+
+                            if(ciudadExiste){
+                                for (int i = 0; i < ListaCiudades.size(); i++) {
+                                    Ciudad ciudad = ListaCiudades.get(i);
+                                    if(ciudad.getNombre().equals(c.getCiudad())){
+                                        ciudad.setCantEnviados(ciudad.getCantEnviados()+1);    
+                                        ciudad.setGanancia(ciudad.getGanancia()+documento.valor());
+
+
+                                    }
+                                }
+                            }
+
+
+                        }else if(rutpersona.equals(rutDestinatario)) {
+
+                            c.getlEnvioDestinatario().insertar(documento);
+
+                            boolean ciudadExiste = verificarCiudad(c.getCiudad());
+
+                            if(ciudadExiste){
+                                for (int i = 0; i < ListaCiudades.size(); i++) {
+                                Ciudad ciudad = ListaCiudades.get(i);
+                                    if(ciudad.getNombre().equals(c.getCiudad())){
+
+                                        ciudad.setCantRecibidos(ciudad.getCantRecibidos()+1);
+
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                    
+                    return true;
+                }
+                
+            }
+            case "Encomienda":
+            {
+                Envio encomienda = new Encomienda ( null,  peso,  largo,  ancho,  profundidad);
+                
+                if(encomienda instanceof Encomienda){
+                    encomienda.setCodigo(codigoNuevo);
+                    encomienda.setRutDestinatario(rutDestinatario);
+                    encomienda.setRutRemitente(rutRemitente);
+                    
+                    for(int j=0;j<ListaClientes.size();j++) {
+                        Cliente c =ListaClientes.get(j);
+                        String rutpersona = c.getRut();
+                        if(rutpersona.equals(rutRemitente) ) {
+                            c.getlEnvioRemitente().insertar(encomienda);
+                            boolean ciudadExiste = verificarCiudad(c.getCiudad());
+                            if(ciudadExiste){
+                                for (int i = 0; i < ListaCiudades.size(); i++) {
+                                    Ciudad ciudad = ListaCiudades.get(i);
+                                    if(ciudad.getNombre().equals(c.getCiudad())){
+                                        ciudad.setCantEnviados(ciudad.getCantEnviados()+1);                               
+                                        ciudad.setGanancia(ciudad.getGanancia()+encomienda.valor());
+                                    }
+                                }
+                            }
+
+
+                        }else if(rutpersona.equals(rutDestinatario)) {
+                            c.getlEnvioDestinatario().insertar(encomienda);
+                            boolean ciudadExiste = verificarCiudad(c.getCiudad());
+
+                            if(ciudadExiste){
+                                for (int i = 0; i < ListaCiudades.size(); i++) {
+                                Ciudad ciudad = ListaCiudades.get(i);
+                                    if(ciudad.getNombre().equals(c.getCiudad())){
+                                        ciudad.setCantRecibidos(ciudad.getCantRecibidos()+1);
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                    
+                    
+                    return true;
+                }
+                
+            }
+            case "Valija":
+            {
+                Envio valija = new Valija( null,  peso,  material);
+                if(valija instanceof Valija){
+                    valija.setCodigo(codigoNuevo);
+                    valija.setRutDestinatario(rutDestinatario);
+                    valija.setRutRemitente(rutRemitente);
+                    
+                    for(int j=0;j<ListaClientes.size();j++) {
+                        Cliente c =ListaClientes.get(j);
+                        String rutpersona = c.getRut();
+                        if(rutpersona.equals(rutRemitente) ) {
+                            c.getlEnvioRemitente().insertar(valija);
+                            boolean ciudadExiste = verificarCiudad(c.getCiudad());
+                            if(ciudadExiste){
+                                for (int i = 0; i < ListaCiudades.size(); i++) {
+                                    Ciudad ciudad = ListaCiudades.get(i);
+                                    if(ciudad.getNombre().equals(c.getCiudad())){
+                                        ciudad.setCantEnviados(ciudad.getCantEnviados()+1);
+                                        ciudad.setGanancia(ciudad.getGanancia()+valija.valor());
+                                    }
+                                }
+                            }
+
+
+                        }else if(rutpersona.equals(rutDestinatario)) {
+                            c.getlEnvioDestinatario().insertar(valija);
+                            boolean ciudadExiste = verificarCiudad(c.getCiudad());
+                            if(ciudadExiste){
+                                for (int i = 0; i < ListaCiudades.size(); i++) {
+                                Ciudad ciudad = ListaCiudades.get(i);
+                                    if(ciudad.getNombre().equals(c.getCiudad())){
+                                        ciudad.setCantRecibidos(ciudad.getCantRecibidos()+1);
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                    
+                    return true;
+                }
+                
+            }
+            default:
+                break;
+        }
+        return false;
+        
     }
 
     @Override
@@ -407,23 +564,35 @@ public class SystemEnvios implements SystemImpl{
             case "Documento":
             {   
                 Envio documento = new Documento( null, peso, grosor);
-                int pago = documento.valor();
+                if(documento instanceof Documento){
+                    
+                    int pago = documento.valor();
+                    System.out.println(pago);
+                    
+                    return pago;
+                }
                 
-                return pago;
             }
             case "Encomienda":
             {
                 Envio encomienda = new Encomienda ( null,  peso,  largo,  ancho,  profundidad);
-                int pago = encomienda.valor();
                 
-                return pago;
-               
+                if(encomienda instanceof Encomienda){
+                    int pago = encomienda.valor();
+                    
+                    return pago;
+                }
+                
             }
             case "Valija":
             {
                 Envio valija = new Valija( null,  peso,  material);
-                int pago = valija.valor();
-                return pago;
+                if(valija instanceof Valija){
+                    int pago = valija.valor();
+                    
+                    return pago;
+                }
+                
             }
             default:
                 break;

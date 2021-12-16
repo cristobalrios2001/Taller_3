@@ -31,6 +31,8 @@ public interface SystemImpl {
     
     public boolean descontarVerificarSueldo (String rut, int saldo);
     
+    public boolean entregaConfirmada(String tipoEntrega, String rutRemitente, String rutDestinatario, Double peso, Double grosor, Double largo, Double ancho, Double profundidad, String material);
+    
     public void recargarSaldo(String rut, int saldo);
     
     public String obtenerEntregas(String rut);
