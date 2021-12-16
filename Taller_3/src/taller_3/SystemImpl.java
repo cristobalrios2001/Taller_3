@@ -21,6 +21,8 @@ public interface SystemImpl {
     
     public void ingresarEncomienda(String codigo, String rutRemitente, String rutDestinatario, Double peso, Double largo, Double ancho, Double profundidad );
     
+    public int obtenerPrecio(String tipoEntrega, Double peso, Double grosor, Double largo, Double ancho, Double profundidad, String material); // nuevo
+    
     public void ingresarValija(String codigo, String rutRemitente, String rutDestinatario, String material, Double peso );
     
     public boolean verificarParametro(String tipoEntrega, Double peso, Double grosor, Double largo, Double ancho, Double profundidad, String material);

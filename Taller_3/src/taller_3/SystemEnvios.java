@@ -12,7 +12,7 @@ import java.util.LinkedList;
  *
  * @author crist
  */
-public class System implements SystemImpl{
+public class SystemEnvios implements SystemImpl{
     ArrayList<Ciudad> ListaCiudades = new ArrayList<Ciudad>(); 
     LinkedList<Cliente> ListaClientes = new LinkedList<Cliente>();
     ListaDobleNexo ListaEntregas = new ListaDobleNexo();
@@ -57,24 +57,31 @@ public class System implements SystemImpl{
             if(rutpersona.equals(rutRemitente) ) {
                 c.getlEnvioRemitente().insertar(documento);
                 boolean ciudadExiste = verificarCiudad(c.getCiudad());
+                
                 if(ciudadExiste){
                     for (int i = 0; i < ListaCiudades.size(); i++) {
                         Ciudad ciudad = ListaCiudades.get(i);
                         if(ciudad.getNombre().equals(c.getCiudad())){
-                            ciudad.setCantEnviados(ciudad.getCantEnviados()+1);
+                            ciudad.setCantEnviados(ciudad.getCantEnviados()+1);    
                             ciudad.setGanancia(ciudad.getGanancia()+documento.valor());
+                            
+                            
                         }
                     }
                 }
                 
                 
             }else if(rutpersona.equals(rutDestinatario)) {
+                
                 c.getlEnvioDestinatario().insertar(documento);
-                boolean ciudadExiste = verificarCiudad(c.getRut());
+                
+                boolean ciudadExiste = verificarCiudad(c.getCiudad());
+                
                 if(ciudadExiste){
                     for (int i = 0; i < ListaCiudades.size(); i++) {
                     Ciudad ciudad = ListaCiudades.get(i);
                         if(ciudad.getNombre().equals(c.getCiudad())){
+                            
                             ciudad.setCantRecibidos(ciudad.getCantRecibidos()+1);
                             
                         }
@@ -103,7 +110,7 @@ public class System implements SystemImpl{
                     for (int i = 0; i < ListaCiudades.size(); i++) {
                         Ciudad ciudad = ListaCiudades.get(i);
                         if(ciudad.getNombre().equals(c.getCiudad())){
-                            ciudad.setCantEnviados(ciudad.getCantEnviados()+1);
+                            ciudad.setCantEnviados(ciudad.getCantEnviados()+1);                               
                             ciudad.setGanancia(ciudad.getGanancia()+encomienda.valor());
                         }
                     }
@@ -112,7 +119,8 @@ public class System implements SystemImpl{
                 
             }else if(rutpersona.equals(rutDestinatario)) {
                 c.getlEnvioDestinatario().insertar(encomienda);
-                boolean ciudadExiste = verificarCiudad(c.getRut());
+                boolean ciudadExiste = verificarCiudad(c.getCiudad());
+                
                 if(ciudadExiste){
                     for (int i = 0; i < ListaCiudades.size(); i++) {
                     Ciudad ciudad = ListaCiudades.get(i);
@@ -152,7 +160,7 @@ public class System implements SystemImpl{
                 
             }else if(rutpersona.equals(rutDestinatario)) {
                 c.getlEnvioDestinatario().insertar(valija);
-                boolean ciudadExiste = verificarCiudad(c.getRut());
+                boolean ciudadExiste = verificarCiudad(c.getCiudad());
                 if(ciudadExiste){
                     for (int i = 0; i < ListaCiudades.size(); i++) {
                     Ciudad ciudad = ListaCiudades.get(i);
@@ -177,7 +185,7 @@ public class System implements SystemImpl{
                 if(pesoVer <= 1.5 && grosorVer <= 5){
                     return true;
                 }else{
-                    throw new NullPointerException("El documento no cumple con los requisitos");
+                    return false;
                 }
             }
             case "Encomienda":
@@ -190,7 +198,7 @@ public class System implements SystemImpl{
                 if(pesoVer<50 && largoVer <1.2 && anchoVer < 0.8 && profundidadVer < 0.8){
                     return true;
                 }else{
-                    throw new NullPointerException("La encmienda no cumple con los requisitos");
+                    return false;
                 }
             }
             case "Valija":
@@ -198,7 +206,7 @@ public class System implements SystemImpl{
                 if((material.equals("Cuero") || material.equals("Plastico") || material.equals("tela")) && pesoVer <2){
                     return true;
                 }else{
-                    throw new NullPointerException("La Valija no cumple con los requisitos");
+                    return false;
                 }
             default:
                 break;
@@ -280,7 +288,7 @@ public class System implements SystemImpl{
                     }
                 }
                 
-                salida += "La cantidad de recivos son: "+ldestinatario.size();
+                salida += "\nLa cantidad de recivos son: "+ldestinatario.size();
                 for (int j = 0; j < ldestinatario.size(); j++) {
                     Envio envio = ldestinatario.getElemento(j);
                     if(envio instanceof Documento){
@@ -308,15 +316,15 @@ public class System implements SystemImpl{
             if(envio instanceof Documento){
                 Documento documento = (Documento) envio;
                 salida +="\n\tTipo Entrega: Documento, Codigo: "+documento.getCodigo()+", Rut Remitente: "+documento.getRutRemitente()+", Rut Destinatario: "+documento.getRutDestinatario()
-                            +", Peso: "+documento.getPeso()+", Grosor: "+documento.getGrosor()+", Valor: "+documento.valor();
+                            +", Peso: "+documento.getPeso()+", Grosor: "+documento.getGrosor()+", Valor: "+documento.valor()+" CLP";
             }else if (envio instanceof Encomienda){
                 Encomienda encomienda = (Encomienda) envio;
                 salida +="\n\tTipo Entrega: Documento, Codigo: "+encomienda.getCodigo()+", Rut Remitente: "+encomienda.getRutRemitente()+", Rut Destinatario: "
-                            +encomienda.getRutDestinatario()+ ", Peso: "+encomienda.getPeso()+", Largo: "+encomienda.getLargo()+", Ancho: "+encomienda.getAncho()+", Profundidad: "+encomienda.getProfundidad()+", Valor: "+encomienda.valor();
+                            +encomienda.getRutDestinatario()+ ", Peso: "+encomienda.getPeso()+", Largo: "+encomienda.getLargo()+", Ancho: "+encomienda.getAncho()+", Profundidad: "+encomienda.getProfundidad()+", Valor: "+encomienda.valor()+" CLP";
             }else{
                 Valija valija = (Valija) envio;
                 salida +="\n\tTipo Entrega: Documento, Codigo: "+valija.getCodigo()+", Rut Remitente: "+valija.getRutRemitente()+", Rut Destinatario: "+valija.getRutDestinatario()
-                            +", Peso: "+valija.getPeso()+", Material: "+valija.getMaterial()+", Valor: "+valija.valor();
+                            +", Peso: "+valija.getPeso()+", Material: "+valija.getMaterial()+", Valor: "+valija.valor()+" CLP";
             }
         }
         return salida;
@@ -327,7 +335,7 @@ public class System implements SystemImpl{
         String salida ="";
         for (int i = 0; i < ListaCiudades.size(); i++) {
             Ciudad ciudad = ListaCiudades.get(i);
-            salida +=ciudad.getNombre()+" realizo "+ciudad.getCantEnviados()+" envíos y recibió "+ciudad.getCantRecibidos()+" envios";
+            salida +="\n"+ciudad.getNombre()+" realizo "+ciudad.getCantEnviados()+" envíos y recibió "+ciudad.getCantRecibidos()+" envios";
             
         }
         return salida;
@@ -344,15 +352,15 @@ public class System implements SystemImpl{
                 if(envio instanceof Documento){
                     Documento documento = (Documento) envio;
                     salida +="\n\tTipo Entrega: Documento, Codigo: "+documento.getCodigo()+", Rut Remitente: "+documento.getRutRemitente()+", Rut Destinatario: "+documento.getRutDestinatario()
-                            +", Peso: "+documento.getPeso()+", Grosor: "+documento.getGrosor()+", Valor: "+documento.valor();
+                            +", Peso: "+documento.getPeso()+", Grosor: "+documento.getGrosor();
                 }else if (envio instanceof Encomienda){
                     Encomienda encomienda = (Encomienda) envio;
-                    salida +="\n\tTipo Entrega: Documento, Codigo: "+encomienda.getCodigo()+", Rut Remitente: "+encomienda.getRutRemitente()+", Rut Destinatario: "
-                            +encomienda.getRutDestinatario()+ ", Peso: "+encomienda.getPeso()+", Largo: "+encomienda.getLargo()+", Ancho: "+encomienda.getAncho()+", Profundidad: "+encomienda.getProfundidad()+", Valor: "+encomienda.valor();
+                    salida +="\n\tTipo Entrega: Encomienda, Codigo: "+encomienda.getCodigo()+", Rut Remitente: "+encomienda.getRutRemitente()+", Rut Destinatario: "
+                            +encomienda.getRutDestinatario()+ ", Peso: "+encomienda.getPeso()+", Largo: "+encomienda.getLargo()+", Ancho: "+encomienda.getAncho()+", Profundidad: "+encomienda.getProfundidad();
                 }else{
                     Valija valija = (Valija) envio;
-                    salida +="\n\tTipo Entrega: Documento, Codigo: "+valija.getCodigo()+", Rut Remitente: "+valija.getRutRemitente()+", Rut Destinatario: "+valija.getRutDestinatario()
-                            +", Peso: "+valija.getPeso()+", Material: "+valija.getMaterial()+", Valor: "+valija.valor();
+                    salida +="\n\tTipo Entrega: Valija, Codigo: "+valija.getCodigo()+", Rut Remitente: "+valija.getRutRemitente()+", Rut Destinatario: "+valija.getRutDestinatario()
+                            +", Peso: "+valija.getPeso()+", Material: "+valija.getMaterial();
                 }
             }
         }
@@ -365,7 +373,7 @@ public class System implements SystemImpl{
         salida += "Balance por oficina Stakon: ";
         for (int i = 0; i < ListaCiudades.size(); i++) {
             Ciudad ciudad = ListaCiudades.get(i);
-            salida += "Nombre ciudad oficina: "+ciudad.getNombre()+", Recaudaci+on: "+ciudad.getGanancia();
+            salida += "\nNombre ciudad oficina: "+ciudad.getNombre()+", Recaudaci+on: "+ciudad.getGanancia();
         }
         return salida;
     }
@@ -391,6 +399,36 @@ public class System implements SystemImpl{
     @Override
     public String obtenerEntregasSobrescribir() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int obtenerPrecio(String tipoEntrega, Double peso, Double grosor, Double largo, Double ancho, Double profundidad, String material) {
+        switch (tipoEntrega) {
+            case "Documento":
+            {   
+                Envio documento = new Documento( null, peso, grosor);
+                int pago = documento.valor();
+                
+                return pago;
+            }
+            case "Encomienda":
+            {
+                Envio encomienda = new Encomienda ( null,  peso,  largo,  ancho,  profundidad);
+                int pago = encomienda.valor();
+                
+                return pago;
+               
+            }
+            case "Valija":
+            {
+                Envio valija = new Valija( null,  peso,  material);
+                int pago = valija.valor();
+                return pago;
+            }
+            default:
+                break;
+        }
+        return -1;
     }
     
 }

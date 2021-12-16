@@ -49,9 +49,9 @@ public class Encomienda extends Envio {
 
     @Override
     int valor() {
-        Double pesoVer = peso/1000;
-        Double largoVer = largo/1000;
-        Double anchoVer = ancho/1000;
+        Double pesoVer = peso/100;
+        Double largoVer = largo/100;
+        Double anchoVer = ancho/100;
         Double profundidadVer = profundidad/1000;
         int pago = (int) (pesoVer*largoVer*anchoVer*profundidadVer*50);
         return pago;

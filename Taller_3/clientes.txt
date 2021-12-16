@@ -1,0 +1,3 @@
+11111111,Pablo,Rios,100000,Ovalle
+22222222,Cristopher,Avalos,250000,Antofagasta
+33333333,Tomas,Quiroga,30000,Coquimbo
