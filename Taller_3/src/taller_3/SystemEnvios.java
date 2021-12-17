@@ -179,7 +179,7 @@ public class SystemEnvios implements SystemImpl{
     @Override
     public boolean verificarParametro(String tipoEntrega, Double peso, Double grosor, Double largo, Double ancho, Double profundidad, String material){
         switch (tipoEntrega) {
-            case "documento":
+            case "Documento":
             {
                 Double pesoVer = peso/1000;
                 
@@ -191,7 +191,7 @@ public class SystemEnvios implements SystemImpl{
                     return false;
                 }
             }
-            case "encomienda":
+            case "Encomienda":
             {
                 Double pesoVer = peso/1000;
                 Double largoVer = largo/1000;
@@ -204,7 +204,7 @@ public class SystemEnvios implements SystemImpl{
                     return false;
                 }
             }
-            case "valija":
+            case "Valija":
                 Double pesoVer = peso/1000;
                 if((material.equals("cuero") || material.equals("plastico") || material.equals("tela")) && pesoVer <2){
                     return true;
