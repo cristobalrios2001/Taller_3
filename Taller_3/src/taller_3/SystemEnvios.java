@@ -14,8 +14,8 @@ import java.util.Random;
  * @author crist
  */
 public class SystemEnvios implements SystemImpl{
-    ArrayList<Ciudad> ListaCiudades = new ArrayList<Ciudad>(); 
-    LinkedList<Cliente> ListaClientes = new LinkedList<Cliente>();
+    ArrayList<Ciudad> ListaCiudades = new ArrayList<>(); 
+    LinkedList<Cliente> ListaClientes = new LinkedList<>();
     ListaDobleNexo ListaEntregas = new ListaDobleNexo();
     
     
@@ -232,7 +232,7 @@ public class SystemEnvios implements SystemImpl{
     
     
     @Override
-    public boolean descontarVerificarSueldo(String rut, int pago) { //saldo es el valor del envio
+    public boolean descontarVerificarSueldo(String rut, int pago) { 
         for (int i = 0; i < ListaClientes.size(); i++) {
             Cliente cliente = ListaClientes.get(i);
             if(cliente.getRut().equals(rut)){

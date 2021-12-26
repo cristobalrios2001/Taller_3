@@ -27,35 +27,8 @@ public class Taller_3 {
         lecturaCliente( sistema);
         lecturaEntregas( sistema);
         
-        Scanner sc = new Scanner(System.in);
-        /*
-        System.out.print("Ingrese tipo: ");
-        String tipo = sc.next();//Encomienda
-        System.out.print("Ingrese peso: ");
-        Double peso = sc.nextDouble(); 
-        System.out.print("Ingrese grosor: ");
-        Double grosor = sc.nextDouble();
-        */
-        //                           verificarParametro(String tipoEntrega, Double peso, Double grosor, Double largo, Double ancho, Double profundidad, String material);
-        //System.out.println(sistema.verificarParametro("Encomienda", 10.0, 0.0, 10.0, 10.0, 10.0, null));
-        // obtenerPrecio(String tipoEntrega, Double peso, Double grosor, Double largo, Double ancho, Double profundidad, String material)
+        menu(sistema);
         
-        String tipoEntrega = "Encomienda";
-        Double peso = 40000.0;
-        Double largo =120.0 ;
-        Double ancho = 80.0;
-        Double profundidad = 80.0;        
-        String rutRemitente = "22222222";
-        String rutDestinatario = "11111111";
-        
-        System.out.println(sistema.verificarParametro(tipoEntrega, peso, 0.0, largo, ancho, profundidad, null));
-        sistema.entregaConfirmada( tipoEntrega,  rutRemitente,  rutDestinatario,  peso,  0.0,  largo,  ancho,  profundidad,  null);
-        
-        System.out.println(sistema.obtenerEntregasCliente());
-        
-        System.out.println(sistema.obtenerEntregasPorLocalizacion());
-        
-        System.out.println("\n"+sistema.obtenerBalanceOficina());
         
         
         
@@ -216,7 +189,7 @@ public class Taller_3 {
                         switch(opcion){
                             case 1:
                                 System.out.println("Ha seleccionado la opcion 1: ´Realizar una entrega´ ");
-                                realizarEntrega(rut);
+                                realizarEntrega(rut, system);
                                 break;
                             case 2:
                                 System.out.println("Ha seleccionado la opcion 2: ´Recargar Saldo´ ");
@@ -248,7 +221,7 @@ public class Taller_3 {
                     System.out.println("Ingrese un numero valido (1)Si - (2) no");
                     opcion=sc.nextLine();
                 }if (opcion.equals("1")) {
-                    sys.ingresarRut(rut);
+                    nuevoUsuario(system);
                 }else{
                     System.out.println("Cerrando sistema...");
                     System.exit(0);
@@ -288,17 +261,17 @@ public class Taller_3 {
                 case 1:
                     System.out.println("Ha escogido la entrega de documentos");
                     String tipoD = "Documento";
-                    documentos();
+                    documentos(system, rut);
                     break;
                 case 2:
                     System.out.println("Ha escogido la entrega de encomienda");
                     String tipoE = "Encomienda";
-                    encomienda();
+                     encomienda( system, rut);
                     break;
                 case 3:
                     System.out.println("Ha escogido la entrega de valijas");
                     String tipoV = "Valija";
-                    valijas();
+                    valijas(system,rut);
                     break;
                 case 4:
                     System.out.println("Cerrando sistema");
@@ -321,24 +294,39 @@ public class Taller_3 {
     
     
     
-    private static void documentos(SystemImpl system) {
+    private static void documentos(SystemImpl system,String rutRemitente) {
         Scanner sc = new Scanner(System.in);
         System.out.print("Ingrese el PESO del Documento (en gramos): ");
-        double peso = sc.nextInt();
+        double peso = sc.nextDouble();
         while (peso <0){
             System.out.println("Ingrese un valor de PESO valido !");
             System.out.print("Ingrese el PESO del Documento (en gramos): ");
-            peso = sc.nextInt();
+            peso = sc.nextDouble();
         }
         System.out.print("Ingrese el GROSOR del Documento (en milimetros): ");
-        double grosor = sc.nextInt();
+        double grosor = sc.nextDouble();
         while (grosor <0){
             System.out.println("Ingrese un valor de GROSOR valido !");
             System.out.print("Ingrese el GROSOR del Documento (en milimetros): ");
-            grosor = sc.nextInt();
+            grosor = sc.nextDouble();
         }
         boolean parametroValido = system.verificarParametro("Documento", peso, grosor, 0.0, 0.0, 0.0, null);
         if(parametroValido){
+            System.out.print("Ingrese rut destinatario: ");
+            String rutDestinatario = sc.next();
+            boolean verificarDest = system.verificarRut(rutDestinatario);
+            if(verificarDest){
+                int precio = system.obtenerPrecio("Documento", peso, grosor, 0.0, 0.0, 0.0, null);
+                boolean verSueldo = system.descontarVerificarSueldo(rutRemitente, precio);
+                if(verSueldo){
+                    System.out.println("Entrega realizada con exito");
+                }else{
+                    System.out.println("La entrega no ha podido ser realizada por SALDO INSUFICIENTE !");
+                }
+            }else{
+                System.out.println("El usuario de destino no existe !");
+            }
+            
             
         }else{
             System.out.println("Los parametros no son validos !");
@@ -346,4 +334,132 @@ public class Taller_3 {
         
         
     }
+    
+    
+    private static void encomienda(SystemImpl system,String rutRemitente) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Ingrese el PESO del Documento (en gramos): ");
+        double peso = sc.nextDouble();
+        while (peso <0){
+            System.out.println("Ingrese un valor de PESO valido !");
+            System.out.print("Ingrese el PESO del Documento (en gramos): ");
+            peso = sc.nextDouble();
+        }
+        System.out.print("Ingrese el Largo del Encomienda (en centimetros): ");
+        double largo = sc.nextDouble();
+        while (largo <0){
+            System.out.println("Ingrese un valor de LARGO valido !");
+            System.out.print("Ingrese el LARGO del Encomienda (en centimetros): ");
+            largo = sc.nextDouble();
+        }
+        System.out.print("Ingrese el Ancho de la Encomienda (en centimetros): ");
+        double ancho = sc.nextDouble();
+        while (ancho <0){
+            System.out.println("Ingrese un valor de ANCHO valido !");
+            System.out.print("Ingrese el ANCHO del Documento (en centimetros): ");
+            ancho = sc.nextDouble();
+        }
+        System.out.print("Ingrese la Profundidad de la Encomienda (en centimetros): ");
+        double profundidad = sc.nextDouble();
+        while (profundidad <0){
+            System.out.println("Ingrese un valor de PROFUNDIDAD valido !");
+            System.out.print("Ingrese el PROFUNDIDAD del Documento (en centimetros): ");
+            profundidad = sc.nextDouble();
+        }
+        
+        
+        boolean parametroValido = system.verificarParametro("Encomienda", peso, 0.0, largo, ancho, profundidad, null);
+        if(parametroValido){
+            System.out.print("Ingrese rut destinatario: ");
+            String rutDestinatario = sc.next();
+            boolean verificarDest = system.verificarRut(rutDestinatario);
+            if(verificarDest){
+                int precio = system.obtenerPrecio("Encomienda", peso, 0.0, largo, ancho, profundidad, null);
+                boolean verSueldo = system.descontarVerificarSueldo(rutRemitente, precio);
+                if(verSueldo){
+                    System.out.println("Entrega realizada con exito");
+                }else{
+                    System.out.println("La entrega no ha podido ser realizada por SALDO INSUFICIENTE !");
+                }
+            }else{
+                System.out.println("El usuario de destino no existe !");
+            }
+            
+            
+        }else{
+            System.out.println("Los parametros no son validos !");
+        }
+        
+        
+    }
+ 
+    
+     private static void valijas(SystemImpl system,String rutRemitente) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Ingrese el PESO del Documento (en gramos): ");
+        double peso = sc.nextDouble();
+        while (peso <0){
+            System.out.println("Ingrese un valor de PESO valido !");
+            System.out.print("Ingrese el PESO de la valija (en gramos): ");
+            peso = sc.nextDouble();
+        }
+        System.out.print("Ingrese el MATERIAL de la valija: ");
+        String material = sc.next();
+        while (!material.equalsIgnoreCase("Cuero") || !material.equalsIgnoreCase("Plastico") || !material.equalsIgnoreCase("Tela")){
+            System.out.println("Ingrese un nombre de MATERIAL valido !");
+            System.out.print("Ingrese el MATERIAL de la valija : ");
+            material = sc.next();
+        }
+        boolean parametroValido = system.verificarParametro("Valija", peso, 0.0, 0.0, 0.0, 0.0, material);
+        if(parametroValido){
+            System.out.print("Ingrese rut destinatario: ");
+            String rutDestinatario = sc.next();
+            boolean verificarDest = system.verificarRut(rutDestinatario);
+            if(verificarDest){
+                int precio = system.obtenerPrecio("Valija", peso, 0.0, 0.0, 0.0, 0.0, material);
+                boolean verSueldo = system.descontarVerificarSueldo(rutRemitente, precio);
+                if(verSueldo){
+                    System.out.println("Entrega realizada con exito");
+                }else{
+                    System.out.println("La entrega no ha podido ser realizada por SALDO INSUFICIENTE !");
+                }
+            }else{
+                System.out.println("El usuario de destino no existe !");
+            }
+            
+            
+        }else{
+            System.out.println("Los parametros no son validos !");
+        }
+        
+        
+    }
+    
+    private static void nuevoUsuario(SystemImpl system){
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Ingrese rut: ");
+        String rut = sc.next();
+        boolean verRut = system.verificarRut(rut);
+        if(!verRut){
+            System.out.println("Ingrese Nombre: ");
+            String nombre = sc.next();
+            System.out.println("Ingrese Apellido: ");
+            String apellido = sc.next();
+            System.out.print("Ingrese ciudad: ");
+            String ciudad = sc.next();
+            boolean verCiudad = system.verificarCiudad(ciudad);
+            while (verCiudad == false){
+                System.out.println("Esta ciudad no existe !");
+                System.out.print("Ingrese ciudad: ");
+                ciudad = sc.next();
+                verCiudad = system.verificarCiudad(ciudad);
+            }
+            
+            system.ingresarAsociarCliente( rut,  nombre,  apellido, 0,  ciudad);
+            System.out.println("Cliente ingresado al sistema");
+        }else{
+            System.out.println("Usuario/Rut ya esta registrado en el sistema !");
+        }
+    }
+    
 }
