@@ -549,13 +549,38 @@ public class SystemEnvios implements SystemImpl{
     }
 
     @Override
-    public String obtenerClientesSobrescribir() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String obtenerClientesSobrescribir() {        
+        String salida = "";
+        for (int i = 0; i < ListaClientes.size(); i++) {
+            Cliente cliente = ListaClientes.get(i);
+            salida += cliente.getRut()+","+cliente.getNombre()+","+cliente.getApellido()+","+cliente.getSaldo()+","+cliente.getCiudad();
+            
+        }
+        return salida;
     }
 
     @Override
     public String obtenerEntregasSobrescribir() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //123456, D, 9.999.999-9,1.111.111-1,1500,50
+        //456456, E, 8.888.888-8, 9.999.999-9,40000,120,80,80
+        //459869, D, 7.777.777-7, 8.888.888-8,Cuero,2000
+        String salida = "";
+        for (int i = 0; i < ListaEntregas.size(); i++) {
+            Envio envio = ListaEntregas.getElemento(i);
+            if(envio instanceof Documento){
+                Documento d = (Documento) envio;
+                salida += d.getCodigo()+",D,"+d.getRutRemitente()+","+d.getRutDestinatario()+","+d.getPeso()+","+d.getGrosor();
+            }
+            else if(envio instanceof Encomienda){
+                Encomienda e = (Encomienda) envio;
+                salida += e.getCodigo()+",E"+e.getRutRemitente()+","+e.getRutDestinatario()+","+e.getPeso()+","+e.getLargo()+","+e.getAncho()+","+e.getProfundidad();
+            }
+            else if(envio instanceof Valija){
+                Valija v = (Valija) envio;
+                salida += v.getCodigo()+",V"+v.getRutRemitente()+","+v.getRutDestinatario()+","+v.getMaterial()+","+v.getPeso();
+            }
+        }
+        return salida;
     }
 
     @Override

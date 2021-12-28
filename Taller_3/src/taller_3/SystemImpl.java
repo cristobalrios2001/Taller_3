@@ -77,7 +77,7 @@ public interface SystemImpl {
      * @param material type of material
      * @return return a int with the price of the delivery
      */
-    public int obtenerPrecio(String tipoEntrega, Double peso, Double grosor, Double largo, Double ancho, Double profundidad, String material); // nuevo
+    public int obtenerPrecio(String tipoEntrega, Double peso, Double grosor, Double largo, Double ancho, Double profundidad, String material); 
     
     /**
      * enter a suitcase to the person and system

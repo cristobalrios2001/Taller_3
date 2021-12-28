@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.Random;
+import ucn.*;
 
 /**
  *
@@ -201,6 +202,8 @@ public class Taller_3 {
                                 break;
                             case 4:
                                 System.out.println("Cerrando sistema...");
+                                archivoSalidaEnvios( system);
+                                archivoSalidaClientes( system);
                                 salir=true;
                                 break;
                             default:
@@ -462,4 +465,19 @@ public class Taller_3 {
         }
     }
     
+    private static void archivoSalidaEnvios(SystemImpl system) throws IOException{
+        ArchivoSalida archS = new ArchivoSalida("Entregas.txt");
+        Registro regSalida = new Registro(1);
+        regSalida.agregarCampo(system.obtenerEntregasSobrescribir());
+        
+        archS.writeRegistro(regSalida);
+    }
+    
+    private static void archivoSalidaClientes(SystemImpl system) throws IOException{
+        ArchivoSalida archS = new ArchivoSalida("Cliente.txt");
+        Registro regSalida = new Registro(1);
+        regSalida.agregarCampo(system.obtenerClientesSobrescribir());
+        
+        archS.writeRegistro(regSalida);
+    }
 }
